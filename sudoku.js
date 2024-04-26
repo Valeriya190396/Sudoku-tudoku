@@ -15,71 +15,67 @@ function read(num) {
 	]
 	return newBoard
 }
-const read1 = read(1)
-console.log(read1)
+
 function solve(table) {
-	for(let row = 0; row < 9; row++){
-		for(let col = 0; col < 9; col++){
-			if(table[row][col] === '-'){
-				for(let num = 1; num <= 9; num++){
-					if(chekingNum(num,row,col,table)){
-						table[row][col] === num
-						if(solve(table)){
-							return true
+	for (let row = 0; row < 9; row++) {
+		for (let col = 0; col < 9; col++) {
+			if (table[row][col] === '-') {
+				for (let num = 1; num <= 9; num++) {
+					if (chekingNum(table, row, col, num)) {
+						table[row][col] = num.toString()
+						if (solve(table)) {
+							return table
 						}
-						table[row][col] === '-'
+						table[row][col] = '-'
 					}
-					
 				}
 				return false
 			}
-			
 		}
-	
 	}
-	return true
+	return table
 }
 
-
-function chekingNum(num,row,col,table){      
-	for(let i = 0; i < 9; i++){     //проверка по строкам
-		if(table[row][i] === num){
+function chekingNum(table, row, col, num) {
+	for (let i = 0; i < 9; i++) {
+		//проверка по строкам
+		if (table[row][i] === num.toString()) {
 			return false
 		}
 	}
-	for(let i = 0; i < 9; i++){     //проверка по столбам
-		if(table[i][col] === num){
+	for (let i = 0; i < 9; i++) {
+		//проверка по столбам
+		if (table[i][col] === num.toString()) {
 			return false
 		}
 	}
-		const startRow = Math.floor(row / 3) * 3     //находим квдрат a.k.a squarePants
-		const startCol = Math.floor(col / 3) * 3  
-		for(let i = 0; i < 3; i++){
-			for(let j = 0; j < 3; j++){
-				if(table[startRow + i][startCol + j] === num){
-					return false
-				}
-
+	const startRow = Math.floor(row / 3) * 3 //находим квaдрат a.k.a squarePants
+	const startCol = Math.floor(col / 3) * 3
+	for (let i = 0; i < 3; i++) {
+		for (let j = 0; j < 3; j++) {
+			if (table[startRow + i][startCol + j] === num.toString()) {
+				return false
 			}
-
 		}
+	}
 
 	return true
 }
 
-
-// console.log(solve(read1))
-function isSolved() {
-	/**
-	 * Принимает игровое поле в том формате, в котором его вернули из функции solve.
-	 * Возвращает булевое значение — решено это игровое поле или нет.
-	 */
+function isSolved(table) {
+	for (let row = 0; row < 9; row++) {
+		for (let col = 0; col < 9; col++) {
+			if (table[row][col] === '-') {
+				return false
+			}
+		}
+	}
+	return `Ты молодец, ты решил судоку!`
 }
 
-function prettyBoard() {
-	/**
-	 * Принимает игровое поле в том формате, в котором его вернули из функции solve.
-	 * Выводит в консоль/терминал судоку.
-	 * Подумай, как симпатичнее его вывести.
-	 */
+function prettyBoard(table) {
+	console.table(table)
 }
+
+console.log(isSolved(solve(read(2))))
+prettyBoard(solve(read(2)))
