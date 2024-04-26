@@ -77,5 +77,13 @@ function prettyBoard(table) {
 	console.table(table)
 }
 
-console.log(isSolved(solve(read(2))))
-prettyBoard(solve(read(2)))
+// console.log(isSolved(solve(read(2))))
+// prettyBoard(solve(read(2)))
+
+module.exports = {
+	read,
+    solve,
+    chekingNum,
+    isSolved,
+    prettyBoard,
+}
